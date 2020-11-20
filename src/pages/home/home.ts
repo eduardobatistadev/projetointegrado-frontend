@@ -20,19 +20,20 @@ export class HomePage {
               public menu:MenuController, 
               public auth: AuthService) {
   }
-  login(){
-    this.auth.authenticate(this.creds)
-      .subscribe(response =>{
-        console.log(response.headers.get("Authorization"));
-        this.navCtrl.setRoot('CategoriasPage');
-      },
-      error => {});
-    
-  }
+
   ionViewWillEnter(){
     this.menu.swipeEnable(false);
   }
   ionViewDidLeave(){
     this.menu.swipeEnable(true);
   }
+  login(){
+    this.auth.authenticate(this.creds)
+      .subscribe(response =>{
+        this.auth.successfulLogin(response.headers.get("Authorization"));
+        this.navCtrl.setRoot('CategoriasPage');
+      },
+      error => {});
+  }
+  
 }
