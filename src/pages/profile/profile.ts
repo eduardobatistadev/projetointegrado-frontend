@@ -76,6 +76,7 @@ export class ProfilePage {
       this.picture = 'data:image/png;base64,' + imagemData;
       this.cameraOn = false;
     }, (err) =>{
+      this.cameraOn = false;
     });
   }
 
