@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, MenuController, NavController } from 'ionic-angular';
+import { IonicPage, LoadingController, MenuController, NavController } from 'ionic-angular';
 import { CredenciaisDTO } from '../../models/credenciais.dto';
 import { AuthService } from '../../services/auth.service';
 
@@ -18,7 +18,8 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, 
               public menu:MenuController, 
-              public auth: AuthService) {
+              public auth: AuthService,
+              public loading: LoadingController) {
   }
 
   ionViewWillEnter(){
@@ -34,18 +35,34 @@ export class HomePage {
       this.navCtrl.setRoot('CategoriasPage');
     },
     error => {});
+  
   }
   login(){
+    
     this.auth.authenticate(this.creds)
       .subscribe(response =>{
         this.auth.successfulLogin(response.headers.get('Authorization'));
+        let loader =this.presentLoading();
         this.navCtrl.setRoot('CategoriasPage');
+        loader.dismiss();
       },
-      error => {});
+      error => {
+     
+      });
   }
 
   signup(){
+    let loader =this.presentLoading();
     this.navCtrl.push('SignupPage');
+    loader.dismiss();
+  }
+
+  presentLoading(){
+    let loader = this.loading.create({
+      content: "Aguarde..."
+    });
+    loader.present();
+    return loader;
   }
 
 }

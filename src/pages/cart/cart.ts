@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { API_CONFIG } from '../../config/api.config';
 import { CartItem } from '../../models/cart-item';
 import { ProdutoDTO } from '../../models/produto.dto';
@@ -19,7 +19,8 @@ export class CartPage {
   constructor(public navCtrl: NavController, 
               public navParams: NavParams,  
               public produtoService: ProdutoService,
-              public cartService: CartService) {
+              public cartService: CartService,
+              public loading: LoadingController) {
   }
 
   ionViewDidLoad() {
@@ -53,10 +54,22 @@ export class CartPage {
   }
 
   goOn(){
+    let loader =this.presentLoading();
     this.navCtrl.setRoot('CategoriasPage');
+    loader.dismiss();
   }
   checkout(){
+    let loader =this.presentLoading();
     this.navCtrl.push('PickAddressPage');
+    loader.dismiss();
+  }
+
+  presentLoading(){
+    let loader = this.loading.create({
+      content: "Aguarde..."
+    });
+    loader.present();
+    return loader;
   }
 
 

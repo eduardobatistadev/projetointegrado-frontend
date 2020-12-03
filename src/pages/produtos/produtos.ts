@@ -12,6 +12,7 @@ import { ProdutoService } from '../../services/domain/produto.service';
 export class ProdutosPage {
 
   
+  
 
   items: ProdutoDTO[] = [];
   page:number = 0;

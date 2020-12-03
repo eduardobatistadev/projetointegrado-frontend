@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, LoadingController, NavController, NavParams } from 'ionic-angular';
 import { CidadeDTO } from '../../models/cidade.dto';
 import { EstadoDTO } from '../../models/estado.dto';
 import { CidadeService } from '../../services/domain/cidade.service';
@@ -31,7 +31,8 @@ export class SignupPage {
               public cidadeService: CidadeService,
               public estadoService: EstadoService,
               public clienteService: ClienteService,
-              public alertCtrl: AlertController) {
+              public alertCtrl: AlertController, 
+              public loading: LoadingController) {
 
       this.formGroup = this.formBuilder.group({
         nome: ['Joaquim',[Validators.required, Validators.minLength(5), Validators.maxLength(120)]],
@@ -77,8 +78,10 @@ export class SignupPage {
   signupUser(){
     this.clienteService.insert(this.formGroup.value)
       .subscribe(response =>{
+        let loader =this.presentLoading();
         this.showInsertOk();
         this.navCtrl.setRoot('HomePage');
+        loader.dismiss();
       },
       error =>{});
   }
@@ -99,6 +102,14 @@ export class SignupPage {
       ]
     });
     alert.present();
+  }
+
+  presentLoading(){
+    let loader = this.loading.create({
+      content: "Aguarde..."
+    });
+    loader.present();
+    return loader;
   }
 
 }
